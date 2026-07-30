@@ -211,7 +211,6 @@
     font-size:13px;
     color:var(--text-faint);
     padding:18px 0 10px;
-    border-top:1px solid var(--line);
     margin-top:18px;
   }
   .cmd .sym{color:var(--pass); margin-right:8px;}
@@ -255,6 +254,9 @@
       border-color:var(--glass-border-hover);
       box-shadow:0 20px 36px -20px rgba(63,185,80,0.28);
     }
+    .case:hover .case-title{
+      color:var(--pass);
+    }
   }
   .case-head{
     display:flex;
@@ -263,7 +265,7 @@
     gap:12px;
     flex-wrap:wrap;
   }
-  .case-title{font-weight:600; font-size:14px; color:var(--text);}
+  .case-title{font-weight:600; font-size:14px; color:var(--text); transition:color .2s ease;}
   .case-sub{font-family:var(--mono); font-size:12px; color:var(--text-dim); margin-top:3px;}
   .case-time{
     font-family:var(--mono);
@@ -326,6 +328,123 @@
       border-color:var(--glass-border-hover);
       box-shadow:0 20px 36px -20px rgba(63,185,80,0.28);
     }
+  }
+
+  /* ---------- timeline (professional experience) ---------- */
+  .timeline{
+    position:relative;
+    padding-left:30px;
+    margin-top:4px;
+  }
+  .tl-item{
+    position:relative;
+    padding:12px 14px;
+    margin-bottom:14px;
+    background:var(--surface-2);
+    border:1px solid var(--glass-border);
+    border-radius:8px;
+    backdrop-filter:blur(var(--blur));
+    -webkit-backdrop-filter:blur(var(--blur));
+    opacity:0;
+    animation:tl-in .55s ease forwards;
+    transition:transform .22s ease, border-color .22s ease, box-shadow .22s ease;
+  }
+  .tl-item:nth-child(1){animation-delay:.35s;}
+  .tl-item:nth-child(2){animation-delay:.55s;}
+  .tl-item:nth-child(3){animation-delay:.75s;}
+  .tl-item:nth-child(4){animation-delay:.95s;}
+  .tl-item:nth-child(5){animation-delay:1.15s;}
+  @keyframes tl-in{to{opacity:1;}}
+  .tl-item:last-child{margin-bottom:0;}
+  .tl-item::before{
+    content:'';
+    position:absolute;
+    left:-27px;
+    top:16px;
+    width:12px;
+    height:12px;
+    border-radius:50%;
+    background:var(--pass);
+    box-shadow:0 0 0 3px var(--bg), 0 0 0 4px rgba(63,185,80,0.25);
+    transition:box-shadow .25s ease, transform .25s ease, background .25s ease;
+    z-index:1;
+  }
+  /* connector drawn only between this marker and the next one - never past the last */
+  .tl-item:not(:last-child)::after{
+    content:'';
+    position:absolute;
+    left:-22.5px;
+    top:22px;
+    width:3px;
+    height:calc(100% + 34px);
+    border-radius:3px;
+    background:linear-gradient(180deg, var(--pass) 0%, var(--pass-dim) 60%, rgba(63,185,80,0.3) 100%);
+    box-shadow:0 0 8px rgba(63,185,80,0.3);
+    z-index:0;
+    transform-origin:center;
+    transition:box-shadow .25s ease, transform .25s ease;
+  }
+  /* last item: line runs down to the exact bottom edge of this div, no further */
+  .tl-item:last-child::after{
+    content:'';
+    position:absolute;
+    left:-22.5px;
+    top:22px;
+    width:3px;
+    height:calc(100% - 22px);
+    border-radius:3px;
+    background:linear-gradient(180deg, var(--pass) 0%, var(--pass-dim) 60%, rgba(63,185,80,0.3) 100%);
+    box-shadow:0 0 8px rgba(63,185,80,0.3);
+    z-index:0;
+    transform-origin:center;
+    transition:box-shadow .25s ease, transform .25s ease;
+  }
+  @keyframes tl-line-pulse{
+    0%,100%{opacity:1;}
+    50%{opacity:.55;}
+  }
+  .tl-item:active{
+    transform:translateY(0);
+    border-color:var(--glass-border-hover);
+  }
+  @media (hover:hover){
+    .tl-item:hover{
+      transform:translateY(-3px);
+      border-color:var(--glass-border-hover);
+      box-shadow:0 20px 36px -20px rgba(63,185,80,0.28);
+    }
+    .tl-item:hover::before{
+      background:var(--pass);
+      box-shadow:0 0 0 3px var(--bg), 0 0 0 6px rgba(63,185,80,0.4);
+      transform:scale(1.15);
+    }
+    .tl-item:hover .tl-title{color:var(--pass);}
+    .tl-item:hover::after{
+      transform:scaleX(1.6);
+      box-shadow:0 0 16px rgba(63,185,80,0.6);
+      animation:tl-line-pulse 1.1s ease-in-out infinite;
+    }
+  }
+  .tl-title{
+    font-weight:600;
+    font-size:14px;
+    color:var(--text);
+    transition:color .2s ease;
+  }
+  .tl-meta{
+    font-family:var(--mono);
+    font-size:11px;
+    color:var(--text-faint);
+    margin-top:3px;
+  }
+  .tl-desc{
+    font-size:13px;
+    color:var(--text-dim);
+    line-height:1.6;
+    margin-top:8px;
+  }
+  @media (prefers-reduced-motion: reduce){
+    .tl-item{animation:none; opacity:1;}
   }
 
   /* ---------- skills ---------- */
@@ -534,38 +653,23 @@
     <div class="cmd"><span class="sym">$</span>./run_tests <span class="path">--suite=experience</span></div>
     <h2 class="suite">Professional Experience</h2>
 
-    <div class="case">
-      <div class="case-head">
-        <div>
-          <div class="case-title">Teaching Assistant — Shoubra Faculty of Engineering, Benha University</div>
-          <div class="case-sub">Cairo, Egypt</div>
-        </div>
-        <div class="case-time">2024 — Present</div>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-title">Teaching Assistant — Shoubra Faculty of Engineering, Benha University</div>
+        <div class="tl-meta">Cairo, Egypt · 2024 — Present</div>
+        <div class="tl-desc">Supporting engineering coursework as an active teaching assistant.</div>
       </div>
-      <span class="badge">✓ ACTIVE</span>
-    </div>
 
-    <div class="case">
-      <div class="case-head">
-        <div>
-          <div class="case-title">Part-time Teaching Assistant — Benha National University (BNU)</div>
-          <div class="case-sub">Elobour, Egypt</div>
-        </div>
-        <div class="case-time">2024 — 2026</div>
+      <div class="tl-item">
+        <div class="tl-title">Part-time Teaching Assistant — Benha National University (BNU)</div>
+        <div class="tl-meta">Elobour, Egypt · 2024 — 2026</div>
       </div>
-      <span class="badge">✓ PASSED</span>
-    </div>
 
-    <div class="case">
-      <div class="case-head">
-        <div>
-          <div class="case-title">Technical Support Engineer — Future of Egypt, Egyptian Armed Forces</div>
-          <div class="case-sub">Mandatory military service</div>
-        </div>
-        <div class="case-time">2025 — 2026</div>
+      <div class="tl-item">
+        <div class="tl-title">Technical Support Engineer — Future of Egypt, Egyptian Armed Forces</div>
+        <div class="tl-meta">Mandatory military service · 2025 — 2026</div>
+        <div class="tl-desc">Troubleshot hardware, software, and network infrastructure issues while collaborating with engineering teams to manage IT inventory and maintain system uptime.</div>
       </div>
-      <span class="badge">✓ PASSED</span>
-      <div class="case-body">Troubleshot hardware, software, and network infrastructure issues while collaborating with engineering teams to manage IT inventory and maintain system uptime.</div>
     </div>
   </section>
 
