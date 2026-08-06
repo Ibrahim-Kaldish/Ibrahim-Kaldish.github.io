@@ -360,7 +360,7 @@
     top:16px;
     width:12px;
     height:12px;
-    border-radius:50%;
+    border-radius:2px;
     background:var(--pass);
     box-shadow:0 0 0 3px var(--bg), 0 0 0 4px rgba(63,185,80,0.25);
     transition:box-shadow .25s ease, transform .25s ease, background .25s ease;
@@ -396,6 +396,10 @@
     transform-origin:center;
     transition:box-shadow .25s ease, transform .25s ease;
   }
+  /* connector into the career-start diamond: stops right at the marker, no tail past it */
+  .tl-to-start::after{
+    height:calc(100% + 7px) !important;
+  }
   @keyframes tl-line-pulse{
     0%,100%{opacity:1;}
     50%{opacity:.55;}
@@ -421,6 +425,66 @@
       animation:tl-line-pulse 1.1s ease-in-out infinite;
     }
   }
+  /* ---------- career-start node (genesis marker at the end of the timeline) ---------- */
+  .tl-start{
+    position:relative;
+    padding:12px 14px;
+    margin-bottom:0;
+    border-radius:8px;
+    display:flex;
+    flex-direction:column;
+    gap:2px;
+    transition:transform .22s ease, background .22s ease, box-shadow .22s ease;
+  }
+  .tl-start::before{
+    content:'';
+    position:absolute;
+    left:-28px;
+    top:15px;
+    width:14px;
+    height:14px;
+    border-radius:3px;
+    transform:rotate(45deg);
+    background:var(--pass);
+    box-shadow:0 0 0 3px var(--bg), 0 0 0 4px rgba(63,185,80,0.35), 0 0 14px rgba(63,185,80,0.5);
+    z-index:1;
+    transition:box-shadow .25s ease, transform .25s ease;
+  }
+  /* terminal node: no connector drawn below it */
+  .tl-start::after{
+    content:none;
+  }
+  .tl-start-label{
+    font-family:var(--mono);
+    font-size:13px;
+    font-weight:700;
+    letter-spacing:.02em;
+    color:var(--pass);
+    transition:color .2s ease;
+  }
+  .tl-start:active{
+    transform:translateY(0);
+  }
+  @media (hover:hover){
+    .tl-start:hover{
+      transform:translateY(-3px);
+      background:var(--surface-2);
+      box-shadow:0 20px 36px -20px rgba(63,185,80,0.28);
+    }
+    .tl-start:hover::before{
+      box-shadow:0 0 0 3px var(--bg), 0 0 0 7px rgba(63,185,80,0.45), 0 0 20px rgba(63,185,80,0.7);
+      transform:rotate(45deg) scale(1.2);
+    }
+    .tl-start:hover .tl-start-label{
+      color:var(--text);
+    }
+  }
+  .tl-start-date{
+    font-family:var(--mono);
+    font-size:11px;
+    color:var(--text-faint);
+  }
+
   .tl-head{
     display:flex;
     justify-content:space-between;
@@ -440,6 +504,10 @@
     color:var(--text-faint);
     margin-top:3px;
   }
+  .tl-meta strong, .case-time strong{
+    color:#ffffff;
+    font-weight:400;
+  }
   .tl-dur{color:var(--text-dim);}
   .tl-desc{
     font-size:13px;
@@ -447,6 +515,8 @@
     line-height:1.6;
     margin-top:8px;
   }
+  .tl-desc ul{padding-left:18px; margin-top:2px;}
+  .tl-desc li{margin-bottom:4px;}
   .badge-live{
     display:inline-flex;
     align-items:center;
@@ -682,18 +752,20 @@
     <div class="timeline">
       <div class="tl-item tl-active">
         <div class="tl-head">
+          <div class="tl-title">Software Test Engineer Trainee — National Telecommunications Institute (NTI)</div>
+          <span class="badge badge-live">● ACTIVE</span>
+        </div>
+        <div class="tl-meta">4-month program · Cairo, Egypt · July 2026 — <strong>Present</strong> <span class="tl-dur">· ongoing</span></div>
+        <div class="tl-desc">Designed and executed 100+ test cases across 4 projects, performing manual, mobile, automation (Selenium WebDriver), performance, and database testing, and tracked 50+ bugs via Jira in an Agile team.</div>
+      </div>
+
+      <div class="tl-item tl-active">
+        <div class="tl-head">
           <div class="tl-title">Teaching Assistant — Shoubra Faculty of Engineering, Benha University</div>
           <span class="badge badge-live">● ACTIVE</span>
         </div>
-        <div class="tl-meta">Cairo, Egypt · 2024 — Present <span class="tl-dur">· 2 yrs+</span></div>
+        <div class="tl-meta">Cairo, Egypt · 2024 — <strong>Present</strong> <span class="tl-dur">· 2 yrs+</span></div>
         <div class="tl-desc">Supporting engineering coursework as an active teaching assistant.</div>
-      </div>
-
-      <div class="tl-item">
-        <div class="tl-head">
-          <div class="tl-title">Part-time Teaching Assistant — Benha National University (BNU)</div>
-        </div>
-        <div class="tl-meta">Elobour, Egypt · 2024 — 2026 <span class="tl-dur">· 2 yrs</span></div>
       </div>
 
       <div class="tl-item">
@@ -703,6 +775,18 @@
         </div>
         <div class="tl-meta">Mandatory military service · 2025 — 2026 <span class="tl-dur">· 1 yr</span></div>
         <div class="tl-desc">Troubleshot hardware, software, and network infrastructure issues while collaborating with engineering teams to manage IT inventory and maintain system uptime.</div>
+      </div>
+
+      <div class="tl-item tl-to-start">
+        <div class="tl-head">
+          <div class="tl-title">Part-time Teaching Assistant — Benha National University (BNU)</div>
+        </div>
+        <div class="tl-meta">Elobour, Egypt · 2024 — 2026 <span class="tl-dur">· 2 yrs</span></div>
+      </div>
+
+      <div class="tl-start">
+        <span class="tl-start-label">$ git init career</span>
+        <span class="tl-start-date">B.Sc. Computer Engineering · June 2024</span>
       </div>
     </div>
   </section>
@@ -837,7 +921,7 @@
           <div class="case-title">Software Test Engineer Trainee — National Telecommunications Institute</div>
           <div class="case-sub">4-month program · Cairo, Egypt</div>
         </div>
-        <div class="case-time">July 2026 — Present</div>
+        <div class="case-time">July 2026 — <strong>Present</strong></div>
       </div>
       <span class="badge">✓ ACTIVE</span>
       <div class="case-body">
